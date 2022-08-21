@@ -24,6 +24,89 @@
     ></script>
     <script src="../static/assets/js/charts-lines.js" defer></script>
     <script src="../static/assets/js/charts-pie.js" defer></script>
+    
+    <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDWh2tZNTZKRJQQIs6pqspqEiX7f8mxl08&callback=initMap"></script>
+
+    <script>
+      function initMap() {
+        var map = new google.maps.Map(document.getElementById('map'), {
+          center: {lat: -33.8688, lng: 151.2195},
+          zoom: 13
+        });
+        var input = document.getElementById('searchInput');
+        map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+      
+        var autocomplete = new google.maps.places.Autocomplete(input);
+        autocomplete.bindTo('bounds', map);
+      
+        var infowindow = new google.maps.InfoWindow();
+        var marker = new google.maps.Marker({
+          map: map,
+          anchorPoint: new google.maps.Point(0, -29)
+        });
+      
+        autocomplete.addListener('place_changed', function() {
+          infowindow.close();
+          marker.setVisible(false);
+          var place = autocomplete.getPlace();
+          if (!place.geometry) {
+            window.alert("Autocomplete's returned place contains no geometry");
+            return;
+          }
+        
+          // If the place has a geometry, then present it on a map.
+          if (place.geometry.viewport) {
+            map.fitBounds(place.geometry.viewport);
+          } else {
+            map.setCenter(place.geometry.location);
+            map.setZoom(17);
+          }
+          marker.setIcon(({
+            url: place.icon,
+            size: new google.maps.Size(71, 71),
+            origin: new google.maps.Point(0, 0),
+            anchor: new google.maps.Point(17, 34),
+            scaledSize: new google.maps.Size(35, 35)
+          }));
+          marker.setPosition(place.geometry.location);
+          marker.setVisible(true);
+        
+          var address = '';
+          if (place.address_components) {
+            address = [
+              (place.address_components[0] && place.address_components[0].short_name || ''),
+              (place.address_components[1] && place.address_components[1].short_name || ''),
+              (place.address_components[2] && place.address_components[2].short_name || '')
+            ].join(' ');
+          }
+        
+          infowindow.setContent('<div><strong>' + place.name + '</strong><br>' + address);
+          infowindow.open(map, marker);
+          
+          // Location details
+          for (var i = 0; i < place.address_components.length; i++) {
+            if(place.address_components[i].types[0] == 'postal_code'){
+              document.getElementById('postal_code').innerHTML = place.address_components[i].long_name;
+            }
+            if(place.address_components[i].types[0] == 'country'){
+              document.getElementById('country').innerHTML = place.address_components[i].long_name;
+            }
+          }
+          document.getElementById('location').innerHTML = place.formatted_address;
+          document.getElementById('lat').innerHTML = place.geometry.location.lat();
+          document.getElementById('lon').innerHTML = place.geometry.location.lng();
+        });
+      }
+      </script>
+      <script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyDWh2tZNTZKRJQQIs6pqspqEiX7f8mxl08&callback=initMap" async defer></script>
+    
+	
+	<style type="text/css">
+		#map{
+			width: 1270px;
+			height: 665px;
+		}
+	</style> -->
   </head>
   <body>
     <div
@@ -603,7 +686,7 @@
                 class="relative w-full max-w-xl mr-6 focus-within:text-purple-500"
               >
                 <div class="absolute inset-y-0 flex items-center pl-2">
-                  <svg
+                  <!-- <svg
                     class="w-4 h-4"
                     aria-hidden="true"
                     fill="currentColor"
@@ -614,14 +697,15 @@
                       d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
                       clip-rule="evenodd"
                     ></path>
-                  </svg>
+                  </svg> -->
                 </div>
-                <input
+                <!-- <input
                   class="w-full pl-8 pr-2 text-sm text-gray-700 placeholder-gray-600 bg-gray-100 border-0 rounded-md dark:placeholder-gray-500 dark:focus:shadow-outline-gray dark:focus:placeholder-gray-600 dark:bg-gray-700 dark:text-gray-200 focus:placeholder-gray-500 focus:bg-white focus:border-purple-300 focus:outline-none focus:shadow-outline-purple form-input"
                   type="text"
+                  id="searchInput"
                   placeholder="Search for Places"
                   aria-label="Search"
-                />
+                /> -->
               </div>
             </div>
             <ul class="flex items-center flex-shrink-0 space-x-6">
@@ -832,7 +916,7 @@
           </div>
         </header>
         <main class="h-full overflow-y-auto">
-          <iframe src="" height="683px" width="100%" name="iframe_a" title="">
+          <iframe src="maps.html" height="683px" width="100%" name="iframe_a" title="">
           </iframe>
           <!-- <div class="container px-6 mx-auto grid">
             <h2

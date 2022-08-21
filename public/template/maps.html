@@ -5,16 +5,89 @@
 	<meta charset="utf-8">
 	<title>Maps</title>
 	
-	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDVmYPkaqHq-TRMHWFx9BMGMXB6F_NCmSw&callback=initMap"></script>
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDWh2tZNTZKRJQQIs6pqspqEiX7f8mxl08&callback=initMap"></script>
 	
 	<style type="text/css">
 		#map{
-			width: 400px;
-			height: 400px;
+			width: 1270px;
+			height: 665px;
 		}
 	</style>
+
+<script>
+	function initMap() {
+		var map = new google.maps.Map(document.getElementById('map'), {
+		  center: {lat: 18.5204, lng: 73.8567},
+		  zoom: 13
+		});
+		var input = document.getElementById('searchInput');
+		map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
 	
-	<script type="text/javascript">
+		var autocomplete = new google.maps.places.Autocomplete(input);
+		autocomplete.bindTo('bounds', map);
+	
+		var infowindow = new google.maps.InfoWindow();
+		var marker = new google.maps.Marker({
+			map: map,
+			anchorPoint: new google.maps.Point(0, -29)
+		});
+	
+		autocomplete.addListener('place_changed', function() {
+			infowindow.close();
+			marker.setVisible(false);
+			var place = autocomplete.getPlace();
+			if (!place.geometry) {
+				window.alert("Autocomplete's returned place contains no geometry");
+				return;
+			}
+	  
+			// If the place has a geometry, then present it on a map.
+			if (place.geometry.viewport) {
+				map.fitBounds(place.geometry.viewport);
+			} else {
+				map.setCenter(place.geometry.location);
+				map.setZoom(17);
+			}
+			marker.setIcon(({
+				url: place.icon,
+				size: new google.maps.Size(71, 71),
+				origin: new google.maps.Point(0, 0),
+				anchor: new google.maps.Point(17, 34),
+				scaledSize: new google.maps.Size(35, 35)
+			}));
+			marker.setPosition(place.geometry.location);
+			marker.setVisible(true);
+		
+			var address = '';
+			if (place.address_components) {
+				address = [
+				  (place.address_components[0] && place.address_components[0].short_name || ''),
+				  (place.address_components[1] && place.address_components[1].short_name || ''),
+				  (place.address_components[2] && place.address_components[2].short_name || '')
+				].join(' ');
+			}
+		
+			infowindow.setContent('<div><strong>' + place.name + '</strong><br>' + address);
+			infowindow.open(map, marker);
+		  
+			// Location details
+			for (var i = 0; i < place.address_components.length; i++) {
+				if(place.address_components[i].types[0] == 'postal_code'){
+					document.getElementById('postal_code').innerHTML = place.address_components[i].long_name;
+				}
+				if(place.address_components[i].types[0] == 'country'){
+					document.getElementById('country').innerHTML = place.address_components[i].long_name;
+				}
+			}
+			document.getElementById('location').innerHTML = place.formatted_address;
+			document.getElementById('lat').innerHTML = place.geometry.location.lat();
+			document.getElementById('lon').innerHTML = place.geometry.location.lng();
+		});
+	}
+	</script>
+	<script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyDWh2tZNTZKRJQQIs6pqspqEiX7f8mxl08&callback=initMap" async defer></script>
+	
+	<!-- <script type="text/javascript">
 		x = navigator.geolocation;
 		x.getCurrentPosition(success, failure);
 		function success(position)
@@ -25,9 +98,9 @@
 			var coords = new google.maps.LatLng(myLat,myLong);
 
 			var mapOptions = {
-				zoom:9,
+				zoom:10,
 				center: coords,
-				mapTypeId: google.maps.mapTypeId.ROADMAP
+				// mapTypeId: google.maps.mapTypeId.ROADMAP
 			}
 
 			var map = new google.maps.Map(document.getElementById("map"), mapOptions);
@@ -35,7 +108,7 @@
 
 		}
 		function failure(){};
-	</script>
+	</script> -->
 
 	<!-- <style media="screen">
 		body {
@@ -50,7 +123,17 @@
 			Geeks For Geeks
 		</h1>
 		 -->
+		 <input id="searchInput" class="controls " style="margin-top: 12px;" type="text" placeholder="Enter a location">
+
 		<div id="map"></div>
+
+		<!-- <ul class="geo-data">
+			<li>Full Address: <span id="location"></span></li>
+			<li>Postal Code: <span id="postal_code"></span></li>
+			<li>Country: <span id="country"></span></li>
+			<li>Latitude: <span id="lat"></span></li>
+			<li>Longitude: <span id="lon"></span></li>
+		</ul> -->
 			<!-- Google Map Copied Code -->
 			<!-- <iframe src=
 "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3506.2233913121413!2d77.4051603706222!3d28.50292593193056!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390ce626851f7009%3A0x621185133cfd1ad1!2sGeeksforGeeks!5e0!3m2!1sen!2sin!4v1585040658255!5m2!1sen!2sin"
