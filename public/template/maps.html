@@ -3,24 +3,56 @@
 
 <head>
 	<meta charset="utf-8">
-	<title>Customize the scroll-bar</title>
+	<title>Maps</title>
+	
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDVmYPkaqHq-TRMHWFx9BMGMXB6F_NCmSw&callback=initMap"></script>
+	
+	<style type="text/css">
+		#map{
+			width: 400px;
+			height: 400px;
+		}
+	</style>
+	
+	<script type="text/javascript">
+		x = navigator.geolocation;
+		x.getCurrentPosition(success, failure);
+		function success(position)
+		{
+			var myLat = position.coords.latitude;
+			var myLong = position.coords.longitude;
 
-	<style media="screen">
+			var coords = new google.maps.LatLng(myLat,myLong);
+
+			var mapOptions = {
+				zoom:9,
+				center: coords,
+				mapTypeId: google.maps.mapTypeId.ROADMAP
+			}
+
+			var map = new google.maps.Map(document.getElementById("map"), mapOptions);
+			var marker = new google.maps.Marker({map:map, position:coords});
+
+		}
+		function failure(){};
+	</script>
+
+	<!-- <style media="screen">
 		body {
 			background-color: white;
 		}
-	</style>
+	</style> -->
 </head>
 
 <body>
-	<center>
+	<!-- <center> -->
 		<!-- <h1 style="color:lawngreen;">
 			Geeks For Geeks
 		</h1>
 		 -->
-		<div>
+		<div id="map"></div>
 			<!-- Google Map Copied Code -->
-			<iframe src=
+			<!-- <iframe src=
 "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3506.2233913121413!2d77.4051603706222!3d28.50292593193056!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390ce626851f7009%3A0x621185133cfd1ad1!2sGeeksforGeeks!5e0!3m2!1sen!2sin!4v1585040658255!5m2!1sen!2sin"
 					width="100%"
 					height="660 px"
@@ -29,9 +61,9 @@
 					allowfullscreen=""
 					aria-hidden="false"
 					tabindex="0">
-			</iframe>
-		</div>
-	</center>
+			</iframe> -->
+		
+	<!-- </center> -->
 </body>
 
 </html>
