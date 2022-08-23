@@ -17,10 +17,35 @@
 <script>
 	function initMap() {
 		var map = new google.maps.Map(document.getElementById('map'), {
-		  center: {lat: 18.5204, lng: 73.8567},
+		  center: {lat: 18.5204, lng: 73.8567dz},
 		  zoom: 13
 		});
-		var input = document.getElementById('searchInput');
+		success();
+		
+	}
+	</script>
+	<script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyDWh2tZNTZKRJQQIs6pqspqEiX7f8mxl08&callback=initMap" async defer></script>
+	
+	<script type="text/javascript">
+		x = navigator.geolocation;
+		x.getCurrentPosition(success, failure);
+		function success(position)
+		{
+			var myLat = position.coords.latitude;
+			var myLong = position.coords.longitude;
+
+			var coords = new google.maps.LatLng(myLat,myLong);
+
+			var mapOptions = {
+				zoom:10,
+				center: coords,
+				// mapTypeId: google.maps.mapTypeId.ROADMAP
+			}
+
+			var map = new google.maps.Map(document.getElementById("map"), mapOptions);
+			var marker = new google.maps.Marker({map:map, position:coords});
+
+			var input = document.getElementById('searchInput');
 		map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
 	
 		var autocomplete = new google.maps.places.Autocomplete(input);
@@ -83,32 +108,10 @@
 			document.getElementById('lat').innerHTML = place.geometry.location.lat();
 			document.getElementById('lon').innerHTML = place.geometry.location.lng();
 		});
-	}
-	</script>
-	<script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyDWh2tZNTZKRJQQIs6pqspqEiX7f8mxl08&callback=initMap" async defer></script>
-	
-	<!-- <script type="text/javascript">
-		x = navigator.geolocation;
-		x.getCurrentPosition(success, failure);
-		function success(position)
-		{
-			var myLat = position.coords.latitude;
-			var myLong = position.coords.longitude;
-
-			var coords = new google.maps.LatLng(myLat,myLong);
-
-			var mapOptions = {
-				zoom:10,
-				center: coords,
-				// mapTypeId: google.maps.mapTypeId.ROADMAP
-			}
-
-			var map = new google.maps.Map(document.getElementById("map"), mapOptions);
-			var marker = new google.maps.Marker({map:map, position:coords});
 
 		}
 		function failure(){};
-	</script> -->
+	</script>
 
 	<!-- <style media="screen">
 		body {
